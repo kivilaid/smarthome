@@ -3,7 +3,6 @@ substitutions:
   project_name: "Athom Technology.Gate Opener"
   project_version: "1.2"
 
-
 esphome:
   name: "${device_name}"
   friendly_name: ""
@@ -21,7 +20,6 @@ ota:
 
 logger:
 
-
 mdns:
   disabled: false
 
@@ -34,7 +32,7 @@ wifi:
 captive_portal:
 
 dashboard_import:
-  package_import_url: github://athom-tech/athom-configs/athom-garage-door.yaml
+  package_import_url: github://kivilaid/smarthome/config/athom-garage-door.yaml
 
 sensor:
   - platform: uptime

@@ -1,139 +1,135 @@
 substitutions:
-  device_name: "athom-gate-opener"
-  project_name: "Athom Technology.Gate Opener"
-  project_version: "1.2"
+  device_name: "athom-gate-opener"  # Name of the device
+  project_name: "Athom Technology.Gate Opener"  # Name of the project
+  project_version: "1.2"  # Version of the project
 
 esphome:
-  name: "${device_name}"
-  friendly_name: ""
-  name_add_mac_suffix: true
+  name: "${device_name}"  # Use the device name from substitutions
+  friendly_name: ""  # Friendly name for the device
+  name_add_mac_suffix: true  # Append MAC address to the name
   project:
-    name: "${project_name}"
-    version: "${project_version}"
+    name: "${project_name}"  # Use the project name from substitutions
+    version: "${project_version}"  # Use the project version from substitutions
 
 esp8266:
-  board: esp8285
+  board: esp8285  # Specify the board type
 
-api:
+api:  # Enable API for communication
 
-ota:
+ota:  # Enable over-the-air updates
 
-logger:
+logger:  # Enable logging
 
 mdns:
-  disabled: false
+  disabled: false  # Enable mDNS
 
 web_server:
-  port: 80
+  port: 80  # Enable web server on port 80
 
 wifi:
-  ap: {} # This spawns an AP with the device name and mac address with no password.
+  ap: {}  # This spawns an AP with the device name and MAC address with no password
 
-captive_portal:
+captive_portal:  # Enable captive portal
 
 dashboard_import:
-  package_import_url: github://kivilaid/smarthome/config/athom-garage-door.yaml
+  package_import_url: github://kivilaid/smarthome/blob/main/config/athom-gate-opener.yaml  # URL for importing dashboard configuration
 
 sensor:
   - platform: uptime
-    name: "Uptime Sensor"
+    name: "Uptime Sensor"  # Sensor to track the device uptime
 
   - platform: wifi_signal
-    name: "${friendly_name} WiFi Signal"
-    update_interval: 60s
+    name: "${device_name} WiFi Signal"  # Sensor to track WiFi signal strength
+    update_interval: 60s  # Update interval for the WiFi signal sensor
 
 binary_sensor:
   - platform: status
-    name: "Status"
+    name: "Status"  # Binary sensor for device status
 
   - platform: gpio
     name: "Contact"
-    disabled_by_default: true
-    device_class: garage_door
+    device_class: gate  # Change device class to gate
     id: contact
     pin:
-      number: GPIO4
-      inverted: true
+      number: GPIO4  # GPIO pin number
+      inverted: true  # Invert the signal
     filters:
-      - delayed_on: 20ms
+      - delayed_on: 20ms  # Delay the on signal by 20ms
 
   - platform: gpio
     pin:
-      number: GPIO14
-      mode: INPUT_PULLUP
-      inverted: true
-    name: "Button"
-    disabled_by_default: true
+      number: GPIO14  # GPIO pin number
+      mode: INPUT_PULLUP  # Set the pin mode to INPUT_PULLUP
+      inverted: true  # Invert the signal
+    name: "Button"  # Binary sensor for the button
     on_multi_click:
       - timing:
-          - ON for at most 1s
+          - ON for at most 1s  # Timing for the multi-click action
           - OFF for at least 0.2s
         then:
-          - switch.turn_on: relay
+          - switch.turn_on: relay  # Turn on the relay on short click
       - timing:
-          - ON for at least 4s
+          - ON for at least 4s  # Timing for the long press action
         then:
-          - button.press: Reset
+          - button.press: Reset  # Press the reset button on long press
 
 button:
   - platform: factory_reset
-    name: "Reset"
-    id: Reset
+    name: "Reset"  # Button for factory reset
+    id: Reset  # ID for the reset button
 
   - platform: safe_mode
-    name: "Safe Mode"
-    internal: false
+    name: "Safe Mode"  # Button for safe mode
+    internal: false  # Make the safe mode button visible
 
 switch:
   - platform: gpio
-    pin: GPIO5
-    name: "Relay"
-    id: relay
-    disabled_by_default: true
+    pin: GPIO5  # GPIO pin number for the relay
+    name: "Relay"  # Name for the relay switch
+    id: relay  # ID for the relay switch
     on_turn_on:
-      - light.turn_on: wifi_led
-      - delay: 1s
-      - switch.turn_off: relay
-      - light.turn_off: wifi_led
+      - light.turn_on: wifi_led  # Turn on the WiFi LED when the relay is turned on
+      - delay: 1s  # Delay for 1 second
+      - switch.turn_off: relay  # Turn off the relay after 1 second
+      - light.turn_off: wifi_led  # Turn off the WiFi LED
 
 light:
   - platform: status_led
-    name: "Status LED"
-    id: wifi_led
-    disabled_by_default: true
-    pin: GPIO12
+    name: "Status LED"  # Name for the status LED
+    id: wifi_led  # ID for the WiFi LED
+    pin: GPIO12  # GPIO pin number for the status LED
 
 cover:
   - platform: template
-    device_class: garage
-    name: "Garage Door"
-    lambda: "return id(contact).state ? COVER_OPEN : COVER_CLOSED;"
+    device_class: gate  # Change device class to gate
+    name: "Gate"  # Name for the gate cover
+    lambda: "return id(contact).state ? COVER_OPEN : COVER_CLOSED;"  # Lambda function to determine the cover state
     open_action:
       then:
-       - if:
-          condition:
-            lambda: 'return !id(contact).state;'
-          then:
-              - switch.turn_on: relay
+        - if:
+            condition:
+              lambda: 'return !id(contact).state;'  # Condition to check if the gate is not already open
+            then:
+              - switch.turn_on: relay  # Turn on the relay to open the gate
     stop_action:
-      - switch.turn_on: relay
+      - switch.turn_on: relay  # Turn on the relay to stop the gate
     close_action:
       then:
-       - if:
-          condition:
-            lambda: 'return id(contact).state;'
-          then:
-            - switch.turn_on: relay
+        - if:
+            condition:
+              lambda: 'return id(contact).state;'  # Condition to check if the gate is not already closed
+            then:
+              - switch.turn_on: relay  # Turn on the relay to close the gate
 
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "IP Address"
+      name: "IP Address"  # Text sensor for IP address
     ssid:
-      name: "Connected SSID"
+      name: "Connected SSID"  # Text sensor for connected SSID
     mac_address:
-      name: "Mac Address"
+      name: "Mac Address"  # Text sensor for MAC address
 
 time:
   - platform: sntp
-    id: sntp_time
+    id: sntp_time  # Time platform for SNTP

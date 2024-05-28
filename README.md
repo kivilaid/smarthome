@@ -11,7 +11,7 @@ If you are prompted that there is not enough space, you should upgrade `ESP8266_
 ### Device List
 device|picture|file name|notice
 :---:|:---:|:---:|:---:
-Athom_Plug_V2|<img src="/images/Athom_EU_Plug_V2.png" width="50%" height="20%">|athom-smart-plug-v2.yaml
+Athom_Plug_V2|<img src="https://github.com/athom-tech/athom-configs/blob/main/images/Athom_EU_Plug_V2.png" width="50%" height="20%">|athom-smart-plug-v2.yaml
 Athom_Wall_Outlet|<img src="/images/Athom_Wall_Outlet.png" width="50%" height="20%">|athom-wall-outlet.yaml
 Athom_1Gang_Switch|<img src="/images/Athom_1Gang_Touch_Switch.png" width="50%" height="20%"><img src="/images/Athom_1Gang_Key_Switch.png" width="50%" height="20%"><img src="/images/Athom_1Gang_US_Switch.png" width="50%" height="20%">|athom-sw01.yaml
 Athom_2Gang_Switch|<img src="/images/Athom_2Gang_Touch_Switch.png" width="50%" height="20%"><img src="/images/Athom_2Gang_Key_Switch.png" width="50%" height="20%">|athom-sw02.yaml

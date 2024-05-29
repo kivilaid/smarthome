@@ -73,15 +73,6 @@ binary_sensor:
         then:
           - button.press: Reset  # Press the reset button on long press
 
-button:
-  - platform: factory_reset
-    name: "Reset"  # Button for factory reset
-    id: Reset  # ID for the reset button
-
-  - platform: safe_mode
-    name: "Safe Mode"  # Button for safe mode
-    internal: false  # Make the safe mode button visible
-
 switch:
   - platform: gpio
     pin: GPIO5  # GPIO pin number for the relay

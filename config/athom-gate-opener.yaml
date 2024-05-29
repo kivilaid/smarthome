@@ -62,33 +62,12 @@ binary_sensor:
       mode: INPUT_PULLUP  # Set the pin mode to INPUT_PULLUP
       inverted: true  # Invert the signal
     name: "Button"  # Binary sensor for the button
-    on_multi_click:
-      - timing:
-          - ON for at most 1s  # Timing for the multi-click action
-          - OFF for at least 0.2s
-        then:
-          - switch.turn_on: relay  # Turn on the relay on short click
-      - timing:
-          - ON for at least 4s  # Timing for the long press action
-        then:
-          - button.press: Reset  # Press the reset button on long press
 
 switch:
   - platform: gpio
     pin: GPIO5  # GPIO pin number for the relay
     name: "Relay"  # Name for the relay switch
     id: relay  # ID for the relay switch
-    on_turn_on:
-      - light.turn_on: wifi_led  # Turn on the WiFi LED when the relay is turned on
-      - delay: 1s  # Delay for 1 second
-      - switch.turn_off: relay  # Turn off the relay after 1 second
-      - light.turn_off: wifi_led  # Turn off the WiFi LED
-
-light:
-  - platform: status_led
-    name: "Status LED"  # Name for the status LED
-    id: wifi_led  # ID for the WiFi LED
-    pin: GPIO12  # GPIO pin number for the status LED
 
 cover:
   - platform: template

@@ -7,7 +7,7 @@ substitutions:
   project_name: "Athom Technology.Smart Plug V2"
   project_version: "2.0.2"
   relay_restore_mode: RESTORE_DEFAULT_OFF
-  sensor_update_interval: 10s
+  sensor_update_interval: 300s
   # Current Limit in Amps. AU Plug = 10. IL, BR, EU, UK, US Plug = 16.
   current_limit : "16"
   # Define a domain for this device to use. i.e. iot.home.lan (so device will appear as athom-smart-plug-v2.iot.home.lan in DNS/DHCP logs)
